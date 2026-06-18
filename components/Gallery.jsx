@@ -127,6 +127,259 @@
 //   );
 // }
 
+// "use client";
+// import { useRef, useState } from "react";
+// import { motion, useInView, AnimatePresence } from "framer-motion";
+// import { X, ZoomIn } from "lucide-react";
+
+// const images = [
+//   {
+//     src: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=85&auto=format&fit=crop",
+//     label: "The Dining Room",
+//     gridArea: "1 / 1 / 3 / 2", // row 1-2, col 1 (tall)
+//   },
+//   {
+//     src: "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=85&auto=format&fit=crop",
+//     label: "Signature Plates",
+//     gridArea: "1 / 2 / 2 / 3",
+//   },
+//   {
+//     src: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=85&auto=format&fit=crop",
+//     label: "The Wine Cellar",
+//     gridArea: "1 / 3 / 2 / 4",
+//   },
+//   {
+//     src: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=85&auto=format&fit=crop",
+//     label: "In the Kitchen",
+//     gridArea: "2 / 2 / 3 / 3",
+//   },
+//   {
+//     src: "https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=800&q=85&auto=format&fit=crop",
+//     label: "Private Dining",
+//     gridArea: "2 / 3 / 3 / 4",
+//   },
+//   {
+//     src: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&q=85&auto=format&fit=crop",
+//     label: "Craft Cocktails",
+//     gridArea: "3 / 1 / 4 / 2",
+//   },
+//   {
+//     src: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=800&q=85&auto=format&fit=crop",
+//     label: "Evening Atmosphere",
+//     gridArea: "3 / 2 / 4 / 4", // wide — spans col 2 & 3
+//   },
+// ];
+
+// export default function Gallery() {
+//   const ref = useRef(null);
+//   const inView = useInView(ref, { once: true, margin: "-60px" });
+//   const [lightbox, setLightbox] = useState(null);
+
+//   return (
+//     <section id="gallery" ref={ref} style={{ background: "var(--ink)", padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 3rem)" }}>
+//       <div style={{ maxWidth: "1300px", margin: "0 auto" }}>
+
+//         {/* ── Header ── */}
+//         <motion.div
+//           initial={{ opacity: 0, y: 24 }}
+//           animate={inView ? { opacity: 1, y: 0 } : {}}
+//           transition={{ duration: 0.7 }}
+//           style={{ textAlign: "center", marginBottom: "clamp(2.5rem, 5vw, 4rem)" }}
+//         >
+//           <span style={{
+//             display: "block",
+//             fontSize: "10px",
+//             letterSpacing: "0.35em",
+//             textTransform: "uppercase",
+//             color: "var(--gold)",
+//             marginBottom: "1rem",
+//           }}>
+//             Inside Aurelia
+//           </span>
+//           <h2
+//             className="font-display"
+//             style={{
+//               color: "var(--ivory)",
+//               fontWeight: 400,
+//               fontSize: "clamp(2.5rem, 6vw, 4rem)",
+//               lineHeight: 1,
+//               marginBottom: "1.25rem",
+//             }}
+//           >
+//             Gallery
+//           </h2>
+//           <div style={{
+//             width: "40px",
+//             height: "1px",
+//             background: "var(--gold)",
+//             margin: "0 auto",
+//             opacity: 0.7,
+//           }} />
+//         </motion.div>
+
+//         {/* ── Grid — explicit gridArea, no Tailwind span classes ── */}
+//         <div style={{
+//           display: "grid",
+//           gridTemplateColumns: "repeat(3, 1fr)",
+//           gridTemplateRows: "repeat(3, 280px)",
+//           gap: "6px",
+//         }}>
+//           {images.map((img, i) => (
+//             <motion.div
+//               key={i}
+//               initial={{ opacity: 0, scale: 0.97 }}
+//               animate={inView ? { opacity: 1, scale: 1 } : {}}
+//               transition={{ duration: 0.6, delay: i * 0.07 }}
+//               onClick={() => setLightbox(img)}
+//               style={{
+//                 gridArea: img.gridArea,
+//                 position: "relative",
+//                 overflow: "hidden",
+//                 cursor: "pointer",
+//               }}
+//               className="group"
+//             >
+//               {/* Image */}
+//               <div
+//                 style={{
+//                   position: "absolute",
+//                   inset: 0,
+//                   backgroundImage: `url('${img.src}')`,
+//                   backgroundSize: "cover",
+//                   backgroundPosition: "center",
+//                   transition: "transform 700ms ease",
+//                 }}
+//                 className="group-hover:scale-110"
+//               />
+
+//               {/* Dark overlay on hover */}
+//               <div style={{
+//                 position: "absolute",
+//                 inset: 0,
+//                 background: "rgba(10,9,6,0.5)",
+//                 opacity: 0,
+//                 transition: "opacity 300ms ease",
+//                 display: "flex",
+//                 alignItems: "center",
+//                 justifyContent: "center",
+//               }}
+//               className="group-hover:opacity-100"
+//               >
+//                 <ZoomIn size={26} style={{ color: "var(--gold)" }} />
+//               </div>
+
+//               {/* Bottom gradient always visible */}
+//               <div style={{
+//                 position: "absolute",
+//                 inset: 0,
+//                 background: "linear-gradient(to top, rgba(10,9,6,0.7) 0%, transparent 50%)",
+//               }} />
+
+//               {/* Label */}
+//               <span style={{
+//                 position: "absolute",
+//                 bottom: "1rem",
+//                 left: "1rem",
+//                 fontSize: "9px",
+//                 letterSpacing: "0.22em",
+//                 textTransform: "uppercase",
+//                 color: "rgba(242,237,228,0.8)",
+//               }}>
+//                 {img.label}
+//               </span>
+//             </motion.div>
+//           ))}
+//         </div>
+
+//       </div>
+
+//       {/* ── Lightbox ── */}
+//       <AnimatePresence>
+//         {lightbox && (
+//           <motion.div
+//             initial={{ opacity: 0 }}
+//             animate={{ opacity: 1 }}
+//             exit={{ opacity: 0 }}
+//             onClick={() => setLightbox(null)}
+//             style={{
+//               position: "fixed",
+//               inset: 0,
+//               zIndex: 50,
+//               display: "flex",
+//               alignItems: "center",
+//               justifyContent: "center",
+//               padding: "1.5rem",
+//               background: "rgba(10,9,6,0.95)",
+//             }}
+//           >
+//             <motion.div
+//               initial={{ scale: 0.9, opacity: 0 }}
+//               animate={{ scale: 1, opacity: 1 }}
+//               exit={{ scale: 0.9, opacity: 0 }}
+//               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+//               onClick={(e) => e.stopPropagation()}
+//               style={{
+//                 position: "relative",
+//                 maxWidth: "900px",
+//                 width: "100%",
+//                 maxHeight: "85vh",
+//               }}
+//             >
+//               <img
+//                 src={lightbox.src}
+//                 alt={lightbox.label}
+//                 style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: "80vh" }}
+//               />
+//               <div style={{
+//                 position: "absolute",
+//                 bottom: 0,
+//                 left: 0,
+//                 right: 0,
+//                 padding: "1rem",
+//                 textAlign: "center",
+//                 fontSize: "10px",
+//                 letterSpacing: "0.2em",
+//                 textTransform: "uppercase",
+//                 color: "var(--gold)",
+//               }}>
+//                 {lightbox.label}
+//               </div>
+//               <button
+//                 onClick={() => setLightbox(null)}
+//                 style={{
+//                   position: "absolute",
+//                   top: "1rem",
+//                   right: "1rem",
+//                   padding: "0.5rem",
+//                   color: "var(--ivory-dim)",
+//                   background: "none",
+//                   border: "none",
+//                   cursor: "pointer",
+//                 }}
+//               >
+//                 <X size={20} />
+//               </button>
+//             </motion.div>
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
+
+//       {/* Mobile override */}
+//       <style>{`
+//         @media (max-width: 767px) {
+//           #gallery [style*="gridTemplateColumns"] {
+//             grid-template-columns: 1fr !important;
+//             grid-template-rows: none !important;
+//             grid-auto-rows: 260px !important;
+//           }
+//           #gallery [style*="gridArea"] {
+//             grid-area: auto !important;
+//           }
+//         }
+//       `}</style>
+//     </section>
+//   );
+// }
 "use client";
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
@@ -137,36 +390,50 @@ const images = [
     src: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=85&auto=format&fit=crop",
     label: "The Dining Room",
     gridArea: "1 / 1 / 3 / 2", // row 1-2, col 1 (tall)
+    // mobile: spans full width, taller hero treatment
+    mobileSpan: "full",
   },
   {
     src: "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=85&auto=format&fit=crop",
     label: "Signature Plates",
     gridArea: "1 / 2 / 2 / 3",
+    mobileSpan: "half",
   },
   {
     src: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=85&auto=format&fit=crop",
     label: "The Wine Cellar",
     gridArea: "1 / 3 / 2 / 4",
+    mobileSpan: "half",
   },
   {
     src: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=85&auto=format&fit=crop",
     label: "In the Kitchen",
     gridArea: "2 / 2 / 3 / 3",
+    mobileSpan: "half",
   },
   {
     src: "https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=800&q=85&auto=format&fit=crop",
     label: "Private Dining",
     gridArea: "2 / 3 / 3 / 4",
+    mobileSpan: "half",
   },
   {
     src: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&q=85&auto=format&fit=crop",
     label: "Craft Cocktails",
     gridArea: "3 / 1 / 4 / 2",
+    mobileSpan: "half",
   },
   {
     src: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=800&q=85&auto=format&fit=crop",
     label: "Evening Atmosphere",
-    gridArea: "3 / 2 / 4 / 4", // wide — spans col 2 & 3
+    gridArea: "3 / 2 / 4 / 3",
+    mobileSpan: "half",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=85&auto=format&fit=crop",
+    label: "Chef's Table",
+    gridArea: "3 / 3 / 4 / 4",
+    mobileSpan: "half",
   },
 ];
 
@@ -176,7 +443,14 @@ export default function Gallery() {
   const [lightbox, setLightbox] = useState(null);
 
   return (
-    <section id="gallery" ref={ref} style={{ background: "var(--ink)", padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 3rem)" }}>
+    <section
+      id="gallery"
+      ref={ref}
+      style={{
+        background: "var(--ink)",
+        padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 3rem)",
+      }}
+    >
       <div style={{ maxWidth: "1300px", margin: "0 auto" }}>
 
         {/* ── Header ── */}
@@ -184,16 +458,21 @@ export default function Gallery() {
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          style={{ textAlign: "center", marginBottom: "clamp(2.5rem, 5vw, 4rem)" }}
+          style={{
+            textAlign: "center",
+            marginBottom: "clamp(2.5rem, 5vw, 4rem)",
+          }}
         >
-          <span style={{
-            display: "block",
-            fontSize: "10px",
-            letterSpacing: "0.35em",
-            textTransform: "uppercase",
-            color: "var(--gold)",
-            marginBottom: "1rem",
-          }}>
+          <span
+            style={{
+              display: "block",
+              fontSize: "10px",
+              letterSpacing: "0.35em",
+              textTransform: "uppercase",
+              color: "var(--gold)",
+              marginBottom: "1rem",
+            }}
+          >
             Inside Aurelia
           </span>
           <h2
@@ -208,87 +487,75 @@ export default function Gallery() {
           >
             Gallery
           </h2>
-          <div style={{
-            width: "40px",
-            height: "1px",
-            background: "var(--gold)",
-            margin: "0 auto",
-            opacity: 0.7,
-          }} />
+          <div
+            style={{
+              width: "40px",
+              height: "1px",
+              background: "var(--gold)",
+              margin: "0 auto",
+              opacity: 0.7,
+            }}
+          />
         </motion.div>
 
-        {/* ── Grid — explicit gridArea, no Tailwind span classes ── */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gridTemplateRows: "repeat(3, 280px)",
-          gap: "6px",
-        }}>
+        {/* ── Desktop/Tablet Grid ── */}
+        <div className="gallery-desktop-grid">
           {images.map((img, i) => (
-            <motion.div
+            <GalleryItem
               key={i}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.07 }}
-              onClick={() => setLightbox(img)}
-              style={{
-                gridArea: img.gridArea,
-                position: "relative",
-                overflow: "hidden",
-                cursor: "pointer",
-              }}
-              className="group"
-            >
-              {/* Image */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  backgroundImage: `url('${img.src}')`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  transition: "transform 700ms ease",
-                }}
-                className="group-hover:scale-110"
-              />
-
-              {/* Dark overlay on hover */}
-              <div style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(10,9,6,0.5)",
-                opacity: 0,
-                transition: "opacity 300ms ease",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              className="group-hover:opacity-100"
-              >
-                <ZoomIn size={26} style={{ color: "var(--gold)" }} />
-              </div>
-
-              {/* Bottom gradient always visible */}
-              <div style={{
-                position: "absolute",
-                inset: 0,
-                background: "linear-gradient(to top, rgba(10,9,6,0.7) 0%, transparent 50%)",
-              }} />
-
-              {/* Label */}
-              <span style={{
-                position: "absolute",
-                bottom: "1rem",
-                left: "1rem",
-                fontSize: "9px",
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                color: "rgba(242,237,228,0.8)",
-              }}>
-                {img.label}
-              </span>
-            </motion.div>
+              img={img}
+              i={i}
+              inView={inView}
+              setLightbox={setLightbox}
+              style={{ gridArea: img.gridArea }}
+            />
           ))}
+        </div>
+
+        {/* ── Mobile Grid ── */}
+        <div className="gallery-mobile-grid">
+          {/* Row 1: hero full-width */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0 }}
+            onClick={() => setLightbox(images[0])}
+            className="gallery-mobile-hero group"
+          >
+            <div
+              className="gallery-img-bg group-hover:scale-110"
+              style={{ backgroundImage: `url('${images[0].src}')` }}
+            />
+            <div className="gallery-hover-overlay group-hover:opacity-100">
+              <ZoomIn size={26} style={{ color: "var(--gold)" }} />
+            </div>
+            <div className="gallery-gradient" />
+            <span className="gallery-label">{images[0].label}</span>
+          </motion.div>
+
+          {/* Rows 2-4: 2-column pairs */}
+          <div className="gallery-mobile-pairs">
+            {images.slice(1).map((img, i) => (
+              <motion.div
+                key={i + 1}
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={inView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.6, delay: (i + 1) * 0.07 }}
+                onClick={() => setLightbox(img)}
+                className="gallery-mobile-cell group"
+              >
+                <div
+                  className="gallery-img-bg group-hover:scale-110"
+                  style={{ backgroundImage: `url('${img.src}')` }}
+                />
+                <div className="gallery-hover-overlay group-hover:opacity-100">
+                  <ZoomIn size={22} style={{ color: "var(--gold)" }} />
+                </div>
+                <div className="gallery-gradient" />
+                <span className="gallery-label">{img.label}</span>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
       </div>
@@ -328,20 +595,27 @@ export default function Gallery() {
               <img
                 src={lightbox.src}
                 alt={lightbox.label}
-                style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: "80vh" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  maxHeight: "80vh",
+                }}
               />
-              <div style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                padding: "1rem",
-                textAlign: "center",
-                fontSize: "10px",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "var(--gold)",
-              }}>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: "1rem",
+                  textAlign: "center",
+                  fontSize: "10px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "var(--gold)",
+                }}
+              >
                 {lightbox.label}
               </div>
               <button
@@ -364,19 +638,136 @@ export default function Gallery() {
         )}
       </AnimatePresence>
 
-      {/* Mobile override */}
       <style>{`
+        /* ── Shared cell styles ── */
+        .gallery-img-bg {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          transition: transform 700ms ease;
+        }
+        .gallery-hover-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(10,9,6,0.5);
+          opacity: 0;
+          transition: opacity 300ms ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .gallery-gradient {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to top, rgba(10,9,6,0.7) 0%, transparent 50%);
+        }
+        .gallery-label {
+          position: absolute;
+          bottom: 0.75rem;
+          left: 0.875rem;
+          font-size: 9px;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: rgba(242,237,228,0.8);
+        }
+
+        /* ── Desktop grid (768px+) ── */
+        .gallery-desktop-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: repeat(3, 280px);
+          gap: 6px;
+        }
+        /* Evening Atmosphere no longer spans — it's one of three equal bottom cells */
+        .gallery-desktop-grid > * {
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
+        }
+        .gallery-mobile-grid {
+          display: none;
+        }
+
+        /* ── Mobile grid (< 768px) ── */
         @media (max-width: 767px) {
-          #gallery [style*="gridTemplateColumns"] {
-            grid-template-columns: 1fr !important;
-            grid-template-rows: none !important;
-            grid-auto-rows: 260px !important;
+          .gallery-desktop-grid {
+            display: none;
           }
-          #gallery [style*="gridArea"] {
-            grid-area: auto !important;
+          .gallery-mobile-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+          }
+
+          /* Hero: full-width, taller */
+          .gallery-mobile-hero {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            height: 240px;
+            width: 100%;
+          }
+
+          /* 2-column pair grid */
+          .gallery-mobile-pairs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+          }
+
+          /* Each cell in the pair row */
+          .gallery-mobile-cell {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            height: 160px;
+          }
+
+          /* Last item (Chef's Table) spans both columns as a closing beat */
+          .gallery-mobile-cell:last-child {
+            grid-column: 1 / -1;
+            height: 180px;
+          }
+        }
+
+        /* ── Extra small phones (< 400px) ── */
+        @media (max-width: 399px) {
+          .gallery-mobile-hero {
+            height: 200px;
+          }
+          .gallery-mobile-cell {
+            height: 140px;
+          }
+          .gallery-mobile-cell:last-child {
+            height: 155px;
           }
         }
       `}</style>
     </section>
+  );
+}
+
+/* ── Reusable desktop grid item ── */
+function GalleryItem({ img, i, inView, setLightbox, style }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.6, delay: i * 0.07 }}
+      onClick={() => setLightbox(img)}
+      style={{ ...style, position: "relative", overflow: "hidden", cursor: "pointer" }}
+      className="group"
+    >
+      <div
+        style={{ backgroundImage: `url('${img.src}')` }}
+        className="gallery-img-bg group-hover:scale-110"
+      />
+      <div className="gallery-hover-overlay group-hover:opacity-100">
+        <ZoomIn size={26} style={{ color: "var(--gold)" }} />
+      </div>
+      <div className="gallery-gradient" />
+      <span className="gallery-label">{img.label}</span>
+    </motion.div>
   );
 }
