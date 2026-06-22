@@ -909,6 +909,33 @@ const timeSlots = {
 
 const takenSlots = ["12:30 PM", "7:00 PM", "8:00 PM"];
 
+const Label = ({ icon: Icon, text }) => (
+    <label style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "6px",
+      fontSize: "10px",
+      letterSpacing: "0.15em",
+      textTransform: "uppercase",
+      color: "var(--ivory-faint)",
+      marginBottom: "8px",
+    }}>
+      <Icon size={11} style={{ flexShrink: 0, opacity: 0.7 }} />
+      {text}
+    </label>
+  );
+
+    const Field = ({ children, error }) => (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      {children}
+      {error && (
+        <span style={{ fontSize: "10px", color: "rgba(192,57,43,0.9)", marginTop: "4px" }}>
+          {error}
+        </span>
+      )}
+    </div>
+  );
+
 export default function Reservations() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -960,32 +987,9 @@ export default function Reservations() {
   // NOT via state-derived style — avoids re-render on every keystroke
   const inputStyle = inputBase;
 
-  const Label = ({ icon: Icon, text }) => (
-    <label style={{
-      display: "flex",
-      alignItems: "center",
-      gap: "6px",
-      fontSize: "10px",
-      letterSpacing: "0.15em",
-      textTransform: "uppercase",
-      color: "var(--ivory-faint)",
-      marginBottom: "8px",
-    }}>
-      <Icon size={11} style={{ flexShrink: 0, opacity: 0.7 }} />
-      {text}
-    </label>
-  );
+  
 
-  const Field = ({ children, error }) => (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      {children}
-      {error && (
-        <span style={{ fontSize: "10px", color: "rgba(192,57,43,0.9)", marginTop: "4px" }}>
-          {error}
-        </span>
-      )}
-    </div>
-  );
+
 
   return (
     <section
